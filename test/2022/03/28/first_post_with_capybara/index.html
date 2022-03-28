@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Мой первый пост. Немного тестируем с Capybara | Your awesome title</title>
+
+<meta name="description" content="Write an awesome description for your new site here. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+
+<link rel="stylesheet" href="/Over-a-cup-of-hot-drink-with-Ilia/_bridgetown/static/index.4MY5UYBR.css" />
+<script src="/Over-a-cup-of-hot-drink-with-Ilia/_bridgetown/static/index.PJZZ2K4I.js" defer></script>
+<script type="module">let lastmod = 0
+function startReloadConnection() {
+  const evtSource = new EventSource("/Over-a-cup-of-hot-drink-with-Ilia/_bridgetown/live_reload")
+  evtSource.onmessage = event => {
+    if (event.data == "reloaded!") {
+      location.reload()
+    } else {
+      const newmod = Number(event.data)
+      if (lastmod > 0 && newmod > 0 && lastmod < newmod) {
+        location.reload()
+      } else {
+        lastmod = newmod
+      }
+    }
+  }
+  evtSource.onerror = event => {
+    if (evtSource.readyState === 2) {
+      // reconnect with new object
+      evtSource.close()
+      console.warn("Live reload: attempting to reconnect in 3 seconds...")
+
+      setTimeout(() => startReloadConnection(), 3000)
+    }
+  }
+}
+setTimeout(() => {
+  startReloadConnection()
+}, 500)
+</script>
+
+  </head>
+  <body class="post ">
+    <header>
+  <!-- <img src="/Over-a-cup-of-hot-drink-with-Ilia/images/logo.svg" alt="Logo" /> -->
+</header>
+
+<nav>
+  <ul>
+    <li><a href="/Over-a-cup-of-hot-drink-with-Ilia/">Home</a></li>
+    <li><a href="/Over-a-cup-of-hot-drink-with-Ilia/posts">Posts</a></li>
+  </ul>
+</nav>
+
+
+    <main>
+      <h1>Мой первый пост. Немного тестируем с Capybara</h1>
+
+<h3 id="это-мой-первый-экспериментальный-пост">Это мой первый экспериментальный пост.</h3>
+
+<p>Полчаса назад прочитал про bridgetown в RubyWeekly.
+Будем пробовать, будем осваивать, может и на грабельки наступать ;)
+Я ещё не решил окончательно, буду ли вести блог вообще…
+И следует ли мне остановиться на русском языке.
+А может быть предпочесть иной: английский как lingua franca или что-то более мне близкое?
+И стилями и оформлением может быть займусь когда-нибудь завтра… Как Алисе предлагалось “варенье на завтра”:)
+Впрочем, начнём первый пост.</p>
+
+<h3 id="jquerry-вызывает-у-меня-дрожжь-дрожжь-в-коленках">Jquerry вызывает у меня дрожжь… дрожжь в коленках…</h3>
+
+<p>Пару дней назад, ночью в одном из Ruby-чатов в телеграмме у человека возник вопрос и у меня было немного времени и не было настроения заниматься чем то иным…
+И ужасное настроение идти спать(
+И мы с ним разобрались с его вопросом.
+Изначально вопрос был про Capybara и тест, который должен был нажимать на радиобаттон, чтобы обновлять рейтинг, а потом проверять, что рейтинг обновился.
+Я по наивности направил в пост на <a href="https://stackoverflow.com/questions/27430074/how-to-click-radio-button-with-capybara-in-ruby-on-rails-app#27432406">SO</a></p>
+
+<p>Но потом, в ходе обсуждения в личке с ним, оказалось, что имеет место ajax и jquerry.</p>
+
+<h3 id="я-их-боюсь-потому-и-дерзаю-помочь-и-разобраться">Я их боюсь, потому и дерзаю помочь и разобраться…</h3>
+
+<p>Мной было предложено добавить в сценарий теста строки (поэтапно):</p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="no">Capybara</span><span class="p">.</span><span class="nf">default_driver</span> <span class="o">=</span> <span class="ss">:selenium</span>
+    <span class="no">Capybara</span><span class="p">.</span><span class="nf">ignore_hidden_elements</span> <span class="o">=</span> <span class="kp">false</span>
+</code></pre></div></div>
+<p>И обращаться к видимому элементу с помощью xPath, а не к radio-button.
+В результате спрашивающим был написан вот такой рабочий тест:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scenario</span> <span class="s2">"set rating from user"</span> <span class="k">do</span>
+    <span class="no">Capybara</span><span class="p">.</span><span class="nf">default_driver</span> <span class="o">=</span> <span class="ss">:selenium</span>
+    <span class="no">Capybara</span><span class="p">.</span><span class="nf">ignore_hidden_elements</span> <span class="o">=</span> <span class="kp">false</span>
+    <span class="n">login_as</span><span class="p">(</span><span class="no">FactoryBot</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">:user</span><span class="p">))</span>
+    <span class="n">visit</span> <span class="n">movies_path</span>
+    <span class="n">click_link</span> <span class="s2">"SpiderMan"</span>
+    <span class="n">rating</span> <span class="o">=</span> <span class="n">find</span><span class="p">(</span><span class="s2">".rating &gt; label:nth-child(11)"</span><span class="p">)</span>
+    <span class="n">rating</span><span class="p">.</span><span class="nf">click</span>
+    <span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="p">).</span><span class="nf">to</span> <span class="n">have_content</span> <span class="s2">"Rating: 6.0/10"</span>
+<span class="k">end</span>
+</code></pre></div></div>
+<p>Возможно, что что-то можно сделать лучше… Но у нас — работало!
+И глубокая ночь взяла своё. Крепких снов, до новых дерзаний.</p>
+
+<hr />
+
+<p>P.S.: На сделующий день тот же человек написал мне в личку, что тесты не проходят. 
+А потом он сам разобрался — он запускал их с нестабильным интернетом — и конечно удаленные ссылки на JS-код не загружались.
+Оказалось, что он делал тестовое. Удачи в трудоустройстве!</p>
+
+<p>N.B.: Пост написан для себя — вдруг будет такой же вопрос — и быстрое решение под боком ;)
+А может и тестовое?..</p>
+
+
+
+    </main>
+
+    <footer>
+  Contact me at <a href="mailto:your-email@example.com">your-email@example.com</a>
+</footer>
+
+  </body>
+</html>
