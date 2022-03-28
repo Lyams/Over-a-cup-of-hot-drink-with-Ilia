@@ -1,7 +1,7 @@
 # Мой блог
 Мой новый блог, сделанный с применением Bridgetown.
 ВОзможно я буду в нём писать и приводить его в какой-то удобоварительный вариант.
-В общем, []прошу в гости](https://lyams.github.io/Over-a-cup-of-hot-drink-with-Ilia/posts/)
+В общем, [прошу в гости](https://lyams.github.io/Over-a-cup-of-hot-drink-with-Ilia/posts/)
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
