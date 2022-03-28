@@ -1,7 +1,7 @@
-# Bridgetown Website README
-
-Welcome to your new Bridgetown website! You can update this README file to provide additional context and setup information for yourself or other contributors.
-
+# Мой блог
+Мой новый блог, сделанный с применением Bridgetown.
+ВОзможно я буду в нём писать и приводить его в какой-то удобоварительный вариант.
+В общем, []прошу в гости](https://lyams.github.io/Over-a-cup-of-hot-drink-with-Ilia/posts/)
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
